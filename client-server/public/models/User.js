@@ -131,35 +131,8 @@ class User {
 
     static getUserStorage(){
 
-        let users = [];
+        return Fetch.get('/users');
 
-        /* if (sessionStorage.getItem('users')) {
-
-            users = JSON.parse(sessionStorage.getItem('users'));
-        } */
-
-        if (localStorage.getItem('users')) {
-
-            users = JSON.parse(localStorage.getItem('users'));
-        }
-
-        return users;
-    }//close method
-    
-    getNewID(){
-
-        let usersID = parseInt(localStorage.getItem('usersID'));
-
-        if (!usersID > 0) {
-
-            usersID = 0;
-        }
-
-        usersID++;
-
-        localStorage.setItem('usersID', usersID);
-
-        return usersID;
     }//close method
 
     toJSON() {
@@ -168,7 +141,7 @@ class User {
 
         Object.keys(this).forEach(key => {
 
-            if (this[key] ==! undefined) json[key] = this[key];
+            if (this[key] !== undefined) json[key] = this[key];
         });
 
         return json;
@@ -206,17 +179,7 @@ class User {
 
     remove() {
 
-        let users = User.getUserStorage();
-
-        users.forEach((userData, index) => {
-
-            if (this._id == userData._id) {
-
-                users.splice(index, 1);
-            }
-        });
-
-        localStorage.setItem('users', JSON.stringify(users));
+        return HttpRequest.delete(`/users/${this.id}`);
 
     }//close method
     
